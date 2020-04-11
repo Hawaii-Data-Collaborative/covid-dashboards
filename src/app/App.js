@@ -278,11 +278,12 @@ export default class App extends Component<Props, State> {
             style={{
               border: '1px solid #ddd',
               maxWidth: 300,
+              margin: 'auto',
               padding: 15,
               borderRadius: 2
             }}
           >
-            <p>Google API Setup</p>
+            <p style={{ textAlign: 'center' }}>Google API Setup</p>
             <button
               className="form-control"
               id="authorize_button"
