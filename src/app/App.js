@@ -141,14 +141,6 @@ export default class App extends Component<Props, State> {
       showGoogleUi
     } = this.state
 
-    if (loading) {
-      return (
-        <div className="App">
-          <div className="center">Loading...</div>
-        </div>
-      )
-    }
-
     return (
       <div className="App">
         {loading ? (
