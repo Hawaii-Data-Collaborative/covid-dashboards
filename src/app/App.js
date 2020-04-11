@@ -38,7 +38,7 @@ export default class App extends Component<Props, State> {
     residentsOutsideHi: {},
     pending: {},
 
-    deltaType: PERCENT,
+    deltaType: COUNT,
 
     showGoogleUi: false,
     loading: true
@@ -92,6 +92,7 @@ export default class App extends Component<Props, State> {
         }
       } catch (err) {
         console.error(err)
+        alert('Error connecting to Google Sheets')
       }
     })
 
@@ -154,7 +155,7 @@ export default class App extends Component<Props, State> {
                   <div className="delta">
                     (Δ{' '}
                     {deltaType === PERCENT
-                      ? state.deltaPercent
+                      ? `${state.deltaPercent}%`
                       : state.deltaCount}
                     )
                   </div>
@@ -167,7 +168,7 @@ export default class App extends Component<Props, State> {
                   <div className="delta">
                     (Δ{' '}
                     {deltaType === PERCENT
-                      ? bigIsland.deltaPercent
+                      ? `${bigIsland.deltaPercent}%`
                       : bigIsland.deltaCount}
                     )
                   </div>
@@ -183,7 +184,7 @@ export default class App extends Component<Props, State> {
                   <div className="delta">
                     (Δ{' '}
                     {deltaType === PERCENT
-                      ? oahu.deltaPercent
+                      ? `${oahu.deltaPercent}%`
                       : oahu.deltaCount}
                     )
                   </div>
@@ -201,7 +202,7 @@ export default class App extends Component<Props, State> {
                   <span>County Pending:</span>
                   <span>
                     {deltaType === PERCENT
-                      ? pending.deltaPercent
+                      ? `${pending.deltaPercent}%`
                       : pending.deltaCount}
                   </span>
                 </div>
@@ -210,7 +211,7 @@ export default class App extends Component<Props, State> {
                   <span>HI residents diagnosed elsewhere:</span>
                   <span>
                     {deltaType === PERCENT
-                      ? residentsOutsideHi.deltaPercent
+                      ? `${residentsOutsideHi.deltaPercent}%`
                       : residentsOutsideHi.deltaCount}
                   </span>
                 </div>
@@ -235,7 +236,7 @@ export default class App extends Component<Props, State> {
                   <div className="delta">
                     (Δ{' '}
                     {deltaType === PERCENT
-                      ? kauai.deltaPercent
+                      ? `${kauai.deltaPercent}%`
                       : kauai.deltaCount}
                     )
                   </div>
@@ -251,7 +252,7 @@ export default class App extends Component<Props, State> {
                   <div className="delta">
                     (Δ{' '}
                     {deltaType === PERCENT
-                      ? maui.deltaPercent
+                      ? `${maui.deltaPercent}%`
                       : maui.deltaCount}
                     )
                   </div>
