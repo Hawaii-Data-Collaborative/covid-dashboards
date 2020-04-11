@@ -60,7 +60,7 @@ export default class App extends Component<Props, State> {
     if (!gapi) {
       this.attempts++
       if (this.attempts > 3) {
-        alert('Error connecting to Google Sheets')
+        this.alert()
         return
       }
 
@@ -92,7 +92,7 @@ export default class App extends Component<Props, State> {
         }
       } catch (err) {
         console.error(err)
-        alert('Error connecting to Google Sheets')
+        this.alert()
       }
     })
 
@@ -113,8 +113,18 @@ export default class App extends Component<Props, State> {
   }
 
   loadData = async () => {
-    const data = await loadData(window.gapi)
-    this.setState({ ...data, loading: false })
+    try {
+      const data = await loadData(window.gapi)
+      this.setState({ ...data, loading: false })
+    } catch (err) {
+      console.error(err)
+      this.setState({ loading: false })
+      this.alert()
+    }
+  }
+
+  alert = (msg = 'Error connecting to Google Sheets') => {
+    alert(msg)
   }
 
   render() {
@@ -141,129 +151,136 @@ export default class App extends Component<Props, State> {
 
     return (
       <div className="App">
-        <header>
-          <h1>Total Cumulative Cases in Hawaii</h1>
-          <h2>(Values in parentheses refer to change from yesterday)</h2>
-        </header>
-        <main>
-          <div className="container">
-            <div className="row">
-              <div className="col">
-                <div className="stats large">
-                  <div className="title">State</div>
-                  <div className="count">{state.count}</div>
-                  <div className="delta">
-                    (Δ{' '}
-                    {deltaType === PERCENT
-                      ? `${state.deltaPercent}%`
-                      : state.deltaCount}
-                    )
+        {loading ? (
+          <div className="center">Loading...</div>
+        ) : (
+          <>
+            <header>
+              <h1>Total Cumulative Cases in Hawaii</h1>
+              <h2>(Values in parentheses refer to change from yesterday)</h2>
+            </header>
+            <main>
+              <div className="container">
+                <div className="row">
+                  <div className="col">
+                    <div className="stats large">
+                      <div className="title">State</div>
+                      <div className="count">{state.count}</div>
+                      <div className="delta">
+                        (Δ{' '}
+                        {deltaType === PERCENT
+                          ? `${state.deltaPercent}%`
+                          : state.deltaCount}
+                        )
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col">
+                    <div className="stats">
+                      <div className="title">Hawaii</div>
+                      <div className="count">{bigIsland.count}</div>
+                      <div className="delta">
+                        (Δ{' '}
+                        {deltaType === PERCENT
+                          ? `${bigIsland.deltaPercent}%`
+                          : bigIsland.deltaCount}
+                        )
+                      </div>
+                      <div className="photo">
+                        <img src={bigIslandImg} alt="Hawaii" />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col">
+                    <div className="stats">
+                      <div className="title">Honolulu</div>
+                      <div className="count">{oahu.count}</div>
+                      <div className="delta">
+                        (Δ{' '}
+                        {deltaType === PERCENT
+                          ? `${oahu.deltaPercent}%`
+                          : oahu.deltaCount}
+                        )
+                      </div>
+                      <div className="photo">
+                        <img src={oahuImg} alt="Oahu" />
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="col">
-                <div className="stats">
-                  <div className="title">Hawaii</div>
-                  <div className="count">{bigIsland.count}</div>
-                  <div className="delta">
-                    (Δ{' '}
-                    {deltaType === PERCENT
-                      ? `${bigIsland.deltaPercent}%`
-                      : bigIsland.deltaCount}
-                    )
-                  </div>
-                  <div className="photo">
-                    <img src={bigIslandImg} alt="Hawaii" />
-                  </div>
-                </div>
-              </div>
-              <div className="col">
-                <div className="stats">
-                  <div className="title">Honolulu</div>
-                  <div className="count">{oahu.count}</div>
-                  <div className="delta">
-                    (Δ{' '}
-                    {deltaType === PERCENT
-                      ? `${oahu.deltaPercent}%`
-                      : oahu.deltaCount}
-                    )
-                  </div>
-                  <div className="photo">
-                    <img src={oahuImg} alt="Oahu" />
-                  </div>
-                </div>
-              </div>
-            </div>
 
-            <div className="row">
-              <div className="col">
-                <div className="pending d-flex align-items-center">
-                  <Circle />
-                  <span>County Pending:</span>
-                  <span>
-                    {deltaType === PERCENT
-                      ? `${pending.deltaPercent}%`
-                      : pending.deltaCount}
-                  </span>
-                </div>
-                <div className="hi-residents-outside d-flex align-items-center">
-                  <Circle />
-                  <span>HI residents diagnosed elsewhere:</span>
-                  <span>
-                    {deltaType === PERCENT
-                      ? `${residentsOutsideHi.deltaPercent}%`
-                      : residentsOutsideHi.deltaCount}
-                  </span>
-                </div>
-                <div>Show Δ as:</div>
-                <div className="dropdown">
-                  <select
-                    className="form-control"
-                    value={deltaType}
-                    onChange={(e) =>
-                      this.setState({ deltaType: e.target.value })
-                    }
-                  >
-                    <option value={PERCENT}>Percent</option>
-                    <option value={COUNT}>Count</option>
-                  </select>
+                <div className="row">
+                  <div className="col">
+                    <div className="pending d-flex align-items-center">
+                      <Circle />
+                      <span>County Pending:</span>
+                      <span>
+                        {deltaType === PERCENT
+                          ? `${pending.deltaPercent}%`
+                          : pending.deltaCount}
+                      </span>
+                    </div>
+                    <div className="hi-residents-outside d-flex align-items-center">
+                      <Circle />
+                      <span>HI residents diagnosed elsewhere:</span>
+                      <span>
+                        {deltaType === PERCENT
+                          ? `${residentsOutsideHi.deltaPercent}%`
+                          : residentsOutsideHi.deltaCount}
+                      </span>
+                    </div>
+                    <div>Show Δ as:</div>
+                    <div className="dropdown">
+                      <select
+                        className="form-control"
+                        value={deltaType}
+                        onChange={(e) =>
+                          this.setState({ deltaType: e.target.value })
+                        }
+                      >
+                        <option value={PERCENT}>Percent</option>
+                        <option value={COUNT}>Count</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div className="col">
+                    <div className="stats">
+                      <div className="title">Kauai</div>
+                      <div className="count">{kauai.count}</div>
+                      <div className="delta">
+                        (Δ{' '}
+                        {deltaType === PERCENT
+                          ? `${kauai.deltaPercent}%`
+                          : kauai.deltaCount}
+                        )
+                      </div>
+                      <div className="photo">
+                        <img src={kauaiImg} alt="Kauai" />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col">
+                    <div className="stats">
+                      <div className="title">Maui</div>
+                      <div className="count">{maui.count}</div>
+                      <div className="delta">
+                        (Δ{' '}
+                        {deltaType === PERCENT
+                          ? `${maui.deltaPercent}%`
+                          : maui.deltaCount}
+                        )
+                      </div>
+                      <div className="photo">
+                        <img src={mauiImg} alt="Maui" />
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div className="col">
-                <div className="stats">
-                  <div className="title">Kauai</div>
-                  <div className="count">{kauai.count}</div>
-                  <div className="delta">
-                    (Δ{' '}
-                    {deltaType === PERCENT
-                      ? `${kauai.deltaPercent}%`
-                      : kauai.deltaCount}
-                    )
-                  </div>
-                  <div className="photo">
-                    <img src={kauaiImg} alt="Kauai" />
-                  </div>
-                </div>
-              </div>
-              <div className="col">
-                <div className="stats">
-                  <div className="title">Maui</div>
-                  <div className="count">{maui.count}</div>
-                  <div className="delta">
-                    (Δ{' '}
-                    {deltaType === PERCENT
-                      ? `${maui.deltaPercent}%`
-                      : maui.deltaCount}
-                    )
-                  </div>
-                  <div className="photo">
-                    <img src={mauiImg} alt="Maui" />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </main>
+            </main>
+          </>
+        )}
+
         {showGoogleUi ? (
           <div
             style={{
