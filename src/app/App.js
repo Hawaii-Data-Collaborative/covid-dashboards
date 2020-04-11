@@ -148,11 +148,15 @@ export default class App extends Component<Props, State> {
         ) : (
           <>
             <header>
-              <h1>Total Cumulative Cases in Hawaii</h1>
-              <h2>(Values in parentheses refer to change from yesterday)</h2>
+              <div className="container">
+                <h1>Total Cumulative Cases in Hawaii</h1>
+                <h2 style={{ marginBottom: 30 }}>
+                  (Values in parentheses refer to change from yesterday)
+                </h2>
+              </div>
             </header>
             <main>
-              <div className="container">
+              <div className="container pb-5">
                 <div className="row">
                   <div className="col">
                     <div className="stats large">
@@ -202,7 +206,7 @@ export default class App extends Component<Props, State> {
                 </div>
 
                 <div className="row">
-                  <div className="col">
+                  <div className="col other-numbers">
                     <div className="pending d-flex align-items-center">
                       <Circle />
                       <span>County Pending:</span>
