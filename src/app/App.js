@@ -22,7 +22,6 @@ type State = {
   residentsOutsideHi: Object,
   pending: Object,
   deltaType: PERCENT | COUNT,
-  showGoogleUi: Boolean,
   loading: Boolean
 }
 
@@ -40,19 +39,11 @@ export default class App extends Component<Props, State> {
 
     deltaType: COUNT,
 
-    showGoogleUi: false,
     loading: true
   }
 
-  async componentDidMount() {
+  componentDidMount() {
     this.init()
-    this.checkUrl()
-  }
-
-  checkUrl = () => {
-    const params = new URLSearchParams(window.location.search)
-    const showGoogleUi = params.get('gapi') === '1'
-    this.setState({ showGoogleUi })
   }
 
   init = async () => {
@@ -68,48 +59,17 @@ export default class App extends Component<Props, State> {
       return
     }
 
-    const authorizeButton = document.getElementById('authorize_button')
-    const signoutButton = document.getElementById('signout_button')
-    const handleAuthClick = () => gapi.auth2.getAuthInstance().signIn()
-    const handleSignoutClick = () => gapi.auth2.getAuthInstance().signOut()
-
-    gapi.load('client:auth2', async () => {
+    gapi.load('client', async () => {
+      console.log('[init] googleapi loaded')
       try {
-        const [clientId, apiKey, discoveryDocs, scope] = gapiConfig
-
-        await gapi.client.init({
-          apiKey,
-          clientId,
-          discoveryDocs,
-          scope
-        })
-
-        gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus)
-        updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get())
-        if (authorizeButton) {
-          authorizeButton.onclick = handleAuthClick
-          signoutButton.onclick = handleSignoutClick
-        }
+        const [apiKey, discoveryDocs] = gapiConfig
+        await gapi.client.init({ apiKey, discoveryDocs })
+        console.log('[init] googleapi initialized')
+        this.loadData()
       } catch (err) {
         console.error(err)
-        this.alert()
       }
     })
-
-    const updateSigninStatus = (isSignedIn) => {
-      if (isSignedIn) {
-        if (authorizeButton) {
-          authorizeButton.style.display = 'none'
-          signoutButton.style.display = 'block'
-        }
-        this.loadData()
-      } else {
-        if (authorizeButton) {
-          authorizeButton.style.display = 'block'
-          signoutButton.style.display = 'none'
-        }
-      }
-    }
   }
 
   loadData = async () => {
@@ -137,8 +97,7 @@ export default class App extends Component<Props, State> {
       residentsOutsideHi,
       pending,
       deltaType,
-      loading,
-      showGoogleUi
+      loading
     } = this.state
 
     return (
@@ -276,34 +235,6 @@ export default class App extends Component<Props, State> {
             </main>
           </>
         )}
-
-        {showGoogleUi ? (
-          <div
-            style={{
-              border: '1px solid #ddd',
-              maxWidth: 300,
-              margin: 'auto',
-              padding: 15,
-              borderRadius: 2
-            }}
-          >
-            <p style={{ textAlign: 'center' }}>Google API Setup</p>
-            <button
-              className="form-control"
-              id="authorize_button"
-              style={{ display: 'none' }}
-            >
-              Authorize
-            </button>
-            <button
-              className="form-control"
-              id="signout_button"
-              style={{ display: 'none' }}
-            >
-              Sign Out
-            </button>
-          </div>
-        ) : null}
       </div>
     )
   }
