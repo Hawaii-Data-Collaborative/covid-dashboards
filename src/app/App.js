@@ -123,7 +123,7 @@ export default class App extends Component<Props, State> {
             <main>
               <div className="container pb-3">
                 <div className="row">
-                  <div className="col-5">
+                  <div className="col col-12 col-md-5 pb-5 pb-md-0">
                     <div className="stats large">
                       <div className="title">State</div>
                       <div className="count">{state.count}</div>
@@ -136,7 +136,7 @@ export default class App extends Component<Props, State> {
                       </div>
                     </div>
                   </div>
-                  <div className="col">
+                  <div className="col col-6 col-md-3">
                     <div className="stats">
                       <div className="title">Hawaii</div>
                       <div className="count">{bigIsland.count}</div>
@@ -152,7 +152,7 @@ export default class App extends Component<Props, State> {
                       </div>
                     </div>
                   </div>
-                  <div className="col">
+                  <div className="col col-6 col-md-3">
                     <div className="stats">
                       <div className="title">Honolulu</div>
                       <div className="count">{oahu.count}</div>
@@ -171,24 +171,28 @@ export default class App extends Component<Props, State> {
                 </div>
 
                 <div className="row">
-                  <div className="col-5 other-numbers">
-                    <div className="pending d-flex align-items-center">
+                  <div className="col col-12 col-md-5 other-numbers">
+                    <div className="pending d-flex">
                       <Circle />
-                      <span>County Pending:</span>
-                      <span>
-                        {deltaType === PERCENT
-                          ? `${pending.deltaPercent}%`
-                          : pending.deltaCount}
-                      </span>
+                      <div>
+                        <span>County Pending:</span>
+                        <span className="value">
+                          {deltaType === PERCENT
+                            ? `${pending.deltaPercent}%`
+                            : pending.deltaCount}
+                        </span>
+                      </div>
                     </div>
-                    <div className="hi-residents-outside d-flex align-items-center">
+                    <div className="hi-residents-outside d-flex">
                       <Circle />
-                      <span>HI residents diagnosed elsewhere:</span>
-                      <span>
-                        {deltaType === PERCENT
-                          ? `${residentsOutsideHi.deltaPercent}%`
-                          : residentsOutsideHi.deltaCount}
-                      </span>
+                      <div>
+                        <span>HI residents diagnosed elsewhere:</span>
+                        <span className="value">
+                          {deltaType === PERCENT
+                            ? `${residentsOutsideHi.deltaPercent}%`
+                            : residentsOutsideHi.deltaCount}
+                        </span>
+                      </div>
                     </div>
                     <div>Show 𝚫 as:</div>
                     <div className="dropdown">
@@ -204,7 +208,7 @@ export default class App extends Component<Props, State> {
                       </select>
                     </div>
                   </div>
-                  <div className="col">
+                  <div className="col col-6 col-md-3">
                     <div className="stats">
                       <div className="title">Kauai</div>
                       <div className="count">{kauai.count}</div>
@@ -220,7 +224,7 @@ export default class App extends Component<Props, State> {
                       </div>
                     </div>
                   </div>
-                  <div className="col">
+                  <div className="col col-6 col-md-3">
                     <div className="stats">
                       <div className="title">Maui</div>
                       <div className="count">{maui.count}</div>
