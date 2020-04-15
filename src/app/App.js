@@ -176,11 +176,7 @@ export default class App extends Component<Props, State> {
                       <Circle />
                       <div>
                         <span>County Pending:</span>
-                        <span className="value">
-                          {deltaType === PERCENT
-                            ? `${pending.deltaPercent}%`
-                            : pending.deltaCount}
-                        </span>
+                        <span className="value">{pending.count}</span>
                       </div>
                     </div>
                     <div className="hi-residents-outside d-flex">
@@ -188,9 +184,7 @@ export default class App extends Component<Props, State> {
                       <div>
                         <span>HI residents diagnosed elsewhere:</span>
                         <span className="value">
-                          {deltaType === PERCENT
-                            ? `${residentsOutsideHi.deltaPercent}%`
-                            : residentsOutsideHi.deltaCount}
+                          {residentsOutsideHi.count}
                         </span>
                       </div>
                     </div>
