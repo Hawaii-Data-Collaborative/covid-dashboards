@@ -7,6 +7,9 @@ import bigIslandImg from '../assets/big-island'
 import kauaiImg from '../assets/kauai'
 import mauiImg from '../assets/maui'
 import oahuImg from '../assets/oahu'
+import logo from '../assets/logo.jpg'
+import CalendarModal from '../calendar-modal/CalendarModal'
+import DetailsModal from '../details-modal/DetailsModal'
 
 const PERCENT = 'PERCENT'
 const COUNT = 'COUNT'
@@ -21,6 +24,7 @@ type State = {
   maui: Object,
   residentsOutsideHi: Object,
   pending: Object,
+  modifiedDate: Date,
   deltaType: PERCENT | COUNT,
   loading: Boolean
 }
@@ -36,6 +40,7 @@ export default class App extends Component<Props, State> {
     maui: {},
     residentsOutsideHi: {},
     pending: {},
+    modifiedDate: new Date(),
 
     deltaType: COUNT,
 
@@ -96,6 +101,7 @@ export default class App extends Component<Props, State> {
       maui,
       residentsOutsideHi,
       pending,
+      modifiedDate,
       deltaType,
       loading
     } = this.state
@@ -117,12 +123,12 @@ export default class App extends Component<Props, State> {
             <main>
               <div className="container pb-5">
                 <div className="row">
-                  <div className="col">
+                  <div className="col-5">
                     <div className="stats large">
                       <div className="title">State</div>
                       <div className="count">{state.count}</div>
                       <div className="delta">
-                        (Δ{' '}
+                        (𝚫{' '}
                         {deltaType === PERCENT
                           ? `${state.deltaPercent}%`
                           : state.deltaCount}
@@ -135,7 +141,7 @@ export default class App extends Component<Props, State> {
                       <div className="title">Hawaii</div>
                       <div className="count">{bigIsland.count}</div>
                       <div className="delta">
-                        (Δ{' '}
+                        (𝚫{' '}
                         {deltaType === PERCENT
                           ? `${bigIsland.deltaPercent}%`
                           : bigIsland.deltaCount}
@@ -151,7 +157,7 @@ export default class App extends Component<Props, State> {
                       <div className="title">Honolulu</div>
                       <div className="count">{oahu.count}</div>
                       <div className="delta">
-                        (Δ{' '}
+                        (𝚫{' '}
                         {deltaType === PERCENT
                           ? `${oahu.deltaPercent}%`
                           : oahu.deltaCount}
@@ -165,7 +171,7 @@ export default class App extends Component<Props, State> {
                 </div>
 
                 <div className="row">
-                  <div className="col other-numbers">
+                  <div className="col-5 other-numbers">
                     <div className="pending d-flex align-items-center">
                       <Circle />
                       <span>County Pending:</span>
@@ -184,7 +190,7 @@ export default class App extends Component<Props, State> {
                           : residentsOutsideHi.deltaCount}
                       </span>
                     </div>
-                    <div>Show Δ as:</div>
+                    <div>Show 𝚫 as:</div>
                     <div className="dropdown">
                       <select
                         className="form-control"
@@ -203,7 +209,7 @@ export default class App extends Component<Props, State> {
                       <div className="title">Kauai</div>
                       <div className="count">{kauai.count}</div>
                       <div className="delta">
-                        (Δ{' '}
+                        (𝚫{' '}
                         {deltaType === PERCENT
                           ? `${kauai.deltaPercent}%`
                           : kauai.deltaCount}
@@ -219,7 +225,7 @@ export default class App extends Component<Props, State> {
                       <div className="title">Maui</div>
                       <div className="count">{maui.count}</div>
                       <div className="delta">
-                        (Δ{' '}
+                        (𝚫{' '}
                         {deltaType === PERCENT
                           ? `${maui.deltaPercent}%`
                           : maui.deltaCount}
@@ -230,6 +236,21 @@ export default class App extends Component<Props, State> {
                       </div>
                     </div>
                   </div>
+                </div>
+                <div className="d-flex align-items-center justify-content-end">
+                  <DetailsModal />
+                  <CalendarModal modifiedDate={modifiedDate} />
+                  <a
+                    href="https://hawaiidata.org"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <img
+                      className="logo"
+                      src={logo}
+                      alt="Hawaii Data Collaborative"
+                    />
+                  </a>
                 </div>
               </div>
             </main>
@@ -249,7 +270,7 @@ function Circle() {
       viewBox="0 0 14 14"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <circle cx="7" cy="7" r="7" fill="#2f547c" />
+      <circle cx="7" cy="7" r="7" fill="#a66f98" />
     </svg>
   )
 }
