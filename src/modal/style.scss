@@ -1,3 +1,7 @@
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
+
 .Modal {
   position: fixed;
   z-index: 100;
@@ -13,6 +17,10 @@
     animation: slide-down-2 250ms ease-in-out;
     background: #fafafa;
     box-shadow: 0 0 15px 0 #0002;
+    @include media-breakpoint-down(xs) {
+      margin-left: 5px;
+      margin-right: 5px;
+    }
   }
   .modal-header {
     padding: 15px;
@@ -24,6 +32,9 @@
     max-height: 42vh;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
+    @include media-breakpoint-down(xs) {
+      max-height: 80vh;
+    }
   }
   .modal-footer {
     padding: 5px 15px 15px;
