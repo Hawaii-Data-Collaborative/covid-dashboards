@@ -121,7 +121,7 @@ export default class App extends Component<Props, State> {
               </div>
             </header>
             <main>
-              <div className="container pb-5">
+              <div className="container pb-3">
                 <div className="row">
                   <div className="col-5">
                     <div className="stats large">
