@@ -112,7 +112,7 @@ export default class App extends Component<Props, State> {
           <div className="center">Loading...</div>
         ) : (
           <main>
-            <div className="container pb-3">
+            <div className="container pt-2 pb-2">
               <div className="row">
                 <div className="col col-12 col-md-5 pb-5 pb-md-0">
                   <div className="stats large">
@@ -162,7 +162,7 @@ export default class App extends Component<Props, State> {
               </div>
 
               <div className="row">
-                <div className="col col-12 col-md-5 other-numbers">
+                <div className="col col-12 col-md-5 other-numbers d-flex flex-column align-items-sm-center pt-3 pt-sm-0">
                   <div className="pending d-flex">
                     <Circle color="rgb(167,111,151)" />
                     <div>
@@ -170,17 +170,17 @@ export default class App extends Component<Props, State> {
                       <span className="value">{pending.count}</span>
                     </div>
                   </div>
-                  <div className="hi-residents-outside d-flex">
+                  <div className="hi-residents-outside d-flex mt-sm-3 mb-2 mb-sm-4">
                     <Circle color="rgb(68,110,157)" />
-                    <div>
+                    <div style={{ whiteSpace: 'nowrap' }}>
                       <span>HI residents diagnosed elsewhere:</span>
                       <span className="value">{residentsOutsideHi.count}</span>
                     </div>
                   </div>
-                  <div>Show 𝚫 as:</div>
+                  <div>Show 𝚫 as a:</div>
                   <div className="dropdown">
                     <select
-                      className="form-control"
+                      className="form-control form-control-sm"
                       value={deltaType}
                       onChange={(e) =>
                         this.setState({ deltaType: e.target.value })
@@ -189,6 +189,31 @@ export default class App extends Component<Props, State> {
                       <option value={PERCENT}>Percent</option>
                       <option value={COUNT}>Count</option>
                     </select>
+                  </div>
+                  <div className="align-self-stretch d-flex align-items-center justify-content-between">
+                    <div className="d-flex align-items-center">
+                      <DetailsModal />
+                      {modifiedDate ? (
+                        <span className="mtime">
+                          Last Updated: {moment(modifiedDate).format('MMM DD')}
+                        </span>
+                      ) : null}
+                    </div>
+                    <div>
+                      <div className="logo-wrapper d-md-none">
+                        <a
+                          href="https://hawaiidata.org"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <img
+                            className="logo"
+                            src={logo}
+                            alt="Hawaii Data Collaborative"
+                          />
+                        </a>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div className="col col-6 col-md-3">
@@ -224,15 +249,7 @@ export default class App extends Component<Props, State> {
                   </div>
                 </div>
               </div>
-              <div className="d-flex align-items-center justify-content-between">
-                <div className="d-flex align-items-center">
-                  <DetailsModal />
-                  {modifiedDate ? (
-                    <span className="mtime">
-                      Last Updated: {moment(modifiedDate).format('MMM DD')}
-                    </span>
-                  ) : null}
-                </div>
+              <div className="logo-wrapper d-none d-md-block">
                 <a
                   href="https://hawaiidata.org"
                   target="_blank"
