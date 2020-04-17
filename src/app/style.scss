@@ -40,16 +40,25 @@
       font-size: 30px;
     }
     &.large {
-      font-size: 33px;
+      font-size: 36px;
       .count {
-        font-size: 55px;
+        font-size: 70px;
+      }
+      @include media-breakpoint-down(sm) {
+        font-size: 30px;
+        .count {
+          font-size: 50px;
+        }
       }
     }
   }
   .photo {
     margin-bottom: 50px;
     img {
-      max-width: 100px;
+      max-height: 120px;
+      @include media-breakpoint-down(xs) {
+        max-height: 80px;
+      }
     }
   }
   .pending,
@@ -80,5 +89,10 @@
     min-width: 14px;
     transform: translateY(7px);
     margin-right: 5px;
+  }
+  .mtime {
+    color: #555;
+    font-size: 13px;
+    font-style: italic;
   }
 }
