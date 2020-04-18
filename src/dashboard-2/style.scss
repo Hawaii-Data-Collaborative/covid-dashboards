@@ -1,0 +1,32 @@
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
+
+.Dashboard2 {
+  h1 {
+    font-size: 21px;
+    line-height: 25px;
+    color: #000000;
+    font-weight: bold;
+  }
+  h2 {
+    font-size: 13px;
+    line-height: 15px;
+    color: #898989;
+    font-weight: normal;
+    font-style: italic;
+  }
+  .logo {
+    width: auto;
+    height: 25px;
+  }
+  .trend-for, .county {
+    max-width: 220px;
+    margin-left: 10px;
+  }
+  .mtime {
+    color: #555;
+    font-size: 13px;
+    font-style: italic;
+  }
+}
