@@ -5,7 +5,7 @@ const NEW_CASES = 3
 const CHANGE_P = 4
 // const RATE = 4
 
-export async function loadData(gapi: Object) {
+export async function loadData(gapi: Object, raw: Boolean = false) {
   try {
     console.log('[loadData] loading spreadsheet')
     const res = await gapi.client.sheets.spreadsheets.values.get({
@@ -18,6 +18,10 @@ export async function loadData(gapi: Object) {
     const { values } = res.result
     if (!values.length) {
       throw new Error('No data found.')
+    }
+
+    if (raw) {
+      return values
     }
 
     // Group the rows by region.
@@ -42,7 +46,7 @@ export async function loadData(gapi: Object) {
 
     let modifiedDate = new Date('2000-01-01')
 
-    const processGroup = (group) => {
+    const processGroup = group => {
       const rows = [...group.data].reverse()
       for (const row of rows) {
         // Skip empty rows.
@@ -87,4 +91,27 @@ export async function loadData(gapi: Object) {
     console.error(err)
     throw err
   }
+}
+
+export function getModifiedDate(rows: Object[]) {
+  rows = [...rows].reverse()
+  let modifiedDate = new Date('2000-01-01')
+  for (const row of rows) {
+    // Skip empty rows.
+    if (row.length < 4) {
+      continue
+    }
+
+    // Skip partially empty rows.
+    if (!(row[REGION] && row[DATE] && row[TOTAL_CASES])) {
+      continue
+    }
+
+    const date = new Date(row[DATE])
+    if (date.getTime() > modifiedDate.getTime()) {
+      return date
+    }
+  }
+
+  return null
 }

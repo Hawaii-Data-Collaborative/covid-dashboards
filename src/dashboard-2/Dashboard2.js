@@ -2,48 +2,44 @@ import './style.scss'
 
 import React, { Component } from 'react'
 import moment from 'moment'
-import Chart from 'chart.js'
-import { loadData } from '../data'
 import gapiConfig from '../gapi.json'
 import logo from '../assets/logo.jpg'
+import { loadData, getModifiedDate } from '../data'
+import {
+  HAWAII,
+  HONOLULU,
+  MAUI,
+  KAUAI,
+  CUMULATIVE_CASES,
+  NEW_CASES,
+  CUMULATIVE_RECOVERED,
+  NEW_RECOVERED,
+  CUMULATIVE_HOSPITALIZATIONS,
+  NEW_HOSPITALIZATIONS,
+  CUMULATIVE_DEATHS,
+  NEW_DEATHS,
+  OPTIONS
+} from './constants'
 
-const HAWAII = 'HAWAII'
-const HONOLULU = 'HONOLULU'
-const MAUI = 'MAUI'
-const KAUAI = 'KAUAI'
-
-const CUMULATIVE_CASES = 'CUMULATIVE_CASES'
-const NEW_CASES = 'NEW_CASES'
-const CUMULATIVE_RECOVERED = 'CUMULATIVE_RECOVERED'
-const NEW_RECOVERED = 'NEW_RECOVERED'
-const CUMULATIVE_HOSPITALIZATIONS = 'CUMULATIVE_HOSPITALIZATIONS'
-const NEW_HOSPITALIZATIONS = 'NEW_HOSPITALIZATIONS'
-const CUMULATIVE_DEATHS = 'CUMULATIVE_DEATHS'
-const NEW_DEATHS = 'NEW_DEATHS'
-
-const OPTIONS = [
-  [CUMULATIVE_CASES, 'Cumulative Cases'],
-  [NEW_CASES, 'New Cases'],
-  [CUMULATIVE_RECOVERED, 'Cumulative Recovered'],
-  [NEW_RECOVERED, 'New Recovered'],
-  [CUMULATIVE_HOSPITALIZATIONS, 'Cumulative Hospitalizations'],
-  [NEW_HOSPITALIZATIONS, 'New Hospitalizations'],
-  [CUMULATIVE_DEATHS, 'Cumulative Deaths'],
-  [NEW_DEATHS, 'New Deaths']
-]
+import Chart1 from './Chart1'
+import Chart2 from './Chart2'
+import Chart3 from './Chart3'
 
 type Props = {}
 
 type State = {
-  state: Object,
-  bigIsland: Object,
-  oahu: Object,
-  kauai: Object,
-  maui: Object,
-  residentsOutsideHi: Object,
-  pending: Object,
+  rows: Object[],
   modifiedDate: Date,
-  deltaType: PERCENT | COUNT,
+  trend:
+    | CUMULATIVE_CASES
+    | NEW_CASES
+    | CUMULATIVE_RECOVERED
+    | NEW_RECOVERED
+    | CUMULATIVE_HOSPITALIZATIONS
+    | NEW_HOSPITALIZATIONS
+    | CUMULATIVE_DEATHS
+    | NEW_DEATHS,
+  county: HAWAII | HONOLULU | MAUI | KAUAI,
   loading: Boolean
 }
 
@@ -51,17 +47,10 @@ export default class Dashboard2 extends Component<Props, State> {
   attempts = 0
 
   state = {
-    state: {},
-    bigIsland: {},
-    oahu: {},
-    kauai: {},
-    maui: {},
-    residentsOutsideHi: {},
-    pending: {},
+    rows: [],
     modifiedDate: new Date(),
-
-    deltaType: 0,
-
+    trend: CUMULATIVE_CASES,
+    county: HONOLULU,
     loading: true
   }
 
@@ -72,7 +61,6 @@ export default class Dashboard2 extends Component<Props, State> {
   init = async () => {
     if (process.env.NODE_ENV === 'development' && localStorage.state) {
       this.setState(JSON.parse(localStorage.state))
-      this.initCharts()
       return
     }
 
@@ -103,10 +91,11 @@ export default class Dashboard2 extends Component<Props, State> {
 
   loadData = async () => {
     try {
-      const data = await loadData(window.gapi)
-      this.setState({ ...data, loading: false })
-      localStorage.state = JSON.stringify({ ...data, loading: false })
-      this.initCharts()
+      const rows = await loadData(window.gapi, true)
+      const modifiedDate = getModifiedDate(rows)
+      const nextState = { rows, modifiedDate, loading: false }
+      this.setState(nextState)
+      localStorage.state = JSON.stringify(nextState)
     } catch (err) {
       console.error(err)
       this.setState({ loading: false })
@@ -118,145 +107,16 @@ export default class Dashboard2 extends Component<Props, State> {
     alert(msg)
   }
 
-  initCharts = () => {
-    setTimeout(() => {
-      this.initChart1()
-      this.initChart2()
-      this.initChart3()
-    }, 150)
+  onTrendChange = e => {
+    this.setState({ trend: e.target.value })
   }
 
-  initChart1 = () => {
-    const chart = new Chart('chart-1', {
-      type: 'bar',
-      data: {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-        datasets: [
-          {
-            label: '# of Votes',
-            data: [12, 19, 3, 5, 2, 3],
-            backgroundColor: [
-              'rgba(255, 99, 132, 0.2)',
-              'rgba(54, 162, 235, 0.2)',
-              'rgba(255, 206, 86, 0.2)',
-              'rgba(75, 192, 192, 0.2)',
-              'rgba(153, 102, 255, 0.2)',
-              'rgba(255, 159, 64, 0.2)'
-            ],
-            borderColor: [
-              'rgba(255, 99, 132, 1)',
-              'rgba(54, 162, 235, 1)',
-              'rgba(255, 206, 86, 1)',
-              'rgba(75, 192, 192, 1)',
-              'rgba(153, 102, 255, 1)',
-              'rgba(255, 159, 64, 1)'
-            ],
-            borderWidth: 1
-          }
-        ]
-      },
-      options: {
-        scales: {
-          yAxes: [
-            {
-              ticks: {
-                beginAtZero: true
-              }
-            }
-          ]
-        }
-      }
-    })
-  }
-
-  initChart2 = () => {
-    const chart = new Chart('chart-2', {
-      type: 'bar',
-      data: {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-        datasets: [
-          {
-            label: '# of Votes',
-            data: [12, 19, 3, 5, 2, 3],
-            backgroundColor: [
-              'rgba(255, 99, 132, 0.2)',
-              'rgba(54, 162, 235, 0.2)',
-              'rgba(255, 206, 86, 0.2)',
-              'rgba(75, 192, 192, 0.2)',
-              'rgba(153, 102, 255, 0.2)',
-              'rgba(255, 159, 64, 0.2)'
-            ],
-            borderColor: [
-              'rgba(255, 99, 132, 1)',
-              'rgba(54, 162, 235, 1)',
-              'rgba(255, 206, 86, 1)',
-              'rgba(75, 192, 192, 1)',
-              'rgba(153, 102, 255, 1)',
-              'rgba(255, 159, 64, 1)'
-            ],
-            borderWidth: 1
-          }
-        ]
-      },
-      options: {
-        scales: {
-          yAxes: [
-            {
-              ticks: {
-                beginAtZero: true
-              }
-            }
-          ]
-        }
-      }
-    })
-  }
-
-  initChart3 = () => {
-    const chart = new Chart('chart-3', {
-      type: 'bar',
-      data: {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-        datasets: [
-          {
-            label: '# of Votes',
-            data: [12, 19, 3, 5, 2, 3],
-            backgroundColor: [
-              'rgba(255, 99, 132, 0.2)',
-              'rgba(54, 162, 235, 0.2)',
-              'rgba(255, 206, 86, 0.2)',
-              'rgba(75, 192, 192, 0.2)',
-              'rgba(153, 102, 255, 0.2)',
-              'rgba(255, 159, 64, 0.2)'
-            ],
-            borderColor: [
-              'rgba(255, 99, 132, 1)',
-              'rgba(54, 162, 235, 1)',
-              'rgba(255, 206, 86, 1)',
-              'rgba(75, 192, 192, 1)',
-              'rgba(153, 102, 255, 1)',
-              'rgba(255, 159, 64, 1)'
-            ],
-            borderWidth: 1
-          }
-        ]
-      },
-      options: {
-        scales: {
-          yAxes: [
-            {
-              ticks: {
-                beginAtZero: true
-              }
-            }
-          ]
-        }
-      }
-    })
+  onCountyChange = e => {
+    this.setState({ county: e.target.value })
   }
 
   render() {
-    const { modifiedDate, loading } = this.state
+    const { rows, trend, county, modifiedDate, loading } = this.state
 
     return (
       <div className="Dashboard2">
@@ -265,13 +125,17 @@ export default class Dashboard2 extends Component<Props, State> {
         ) : (
           <main>
             <div className="container pt-2 pb-2">
-              <div className="row mb-4">
+              <div className="row mb-3">
                 <div className="col align-self-center d-flex align-items-center justify-content-center">
                   <b>Trend for: </b>
-                  <select className="form-control form-control-sm trend-for">
-                    {OPTIONS.map(([k, v]) => (
-                      <option key={k} value={v}>
-                        {v}
+                  <select
+                    className="form-control form-control-sm trend-for"
+                    value={trend}
+                    onChange={this.onTrendChange}
+                  >
+                    {OPTIONS.map(([value, label]) => (
+                      <option key={value} value={value}>
+                        {label}
                       </option>
                     ))}
                   </select>
@@ -288,8 +152,8 @@ export default class Dashboard2 extends Component<Props, State> {
               </div>
               <div className="row mb-2">
                 <div className="col">
-                  <div>
-                    <canvas id="chart-1" width="852" height="110"></canvas>
+                  <div className="chart-wrapper d-flex justify-content-center">
+                    <Chart1 rows={rows} trend={trend} />
                   </div>
                 </div>
               </div>
@@ -300,7 +164,11 @@ export default class Dashboard2 extends Component<Props, State> {
                       <h1 className="mb-0">County Trends</h1>
                       <div className="d-flex align-items-center">
                         <b className="text-nowrap">Sort by county:</b>
-                        <select className="form-control form-control-sm county">
+                        <select
+                          className="form-control form-control-sm county"
+                          value={county}
+                          onChange={this.onCountyChange}
+                        >
                           <option value={HAWAII}>Hawaii</option>
                           <option value={HONOLULU}>Honolulu</option>
                           <option value={KAUAI}>Kauai</option>
@@ -313,7 +181,9 @@ export default class Dashboard2 extends Component<Props, State> {
               </div>
               <div className="row mb-2">
                 <div className="col">
-                  <canvas id="chart-2" width="852" height="130"></canvas>
+                  <div className="chart-wrapper d-flex justify-content-center">
+                    <Chart2 rows={rows} trend={trend} county={county} />
+                  </div>
                 </div>
               </div>
               <div className="row mb-1">
@@ -321,9 +191,11 @@ export default class Dashboard2 extends Component<Props, State> {
                   <h1>County 5-day Averages</h1>
                 </div>
               </div>
-              <div className="row mb-2">
+              <div className="row mb-0">
                 <div className="col">
-                  <canvas id="chart-3" width="852" height="110"></canvas>
+                  <div className="chart-wrapper d-flex justify-content-center">
+                    <Chart3 rows={rows} trend={trend} />
+                  </div>
                 </div>
               </div>
               <div className="row align-items-center justify-content-between">

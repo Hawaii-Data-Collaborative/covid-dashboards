@@ -29,4 +29,32 @@
     font-size: 13px;
     font-style: italic;
   }
+  .chart-wrapper {
+    font-size: 12px;
+  }
+}
+
+.hdc-tooltip {
+  background: #fff;
+  font-size: 13px;
+  padding: 10px;
+  box-shadow: 0 0 3px 2px #0001;
+  div {
+    display: flex;
+    align-items: center;
+  }
+  label {
+    color: #898989;
+    margin: 0 5px 0 0;
+    &:after {
+      content: ':';
+    }
+  }
+  .header {
+    text-transform: uppercase;
+    color: #898989;
+    font-size: 11px;
+    font-weight: 600;
+    margin-bottom: 5px;
+  }
 }
