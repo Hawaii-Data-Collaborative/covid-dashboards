@@ -16,7 +16,7 @@ import {
   ColIdx,
   Colors,
   OPTIONS,
-  CHART_HEIGHT
+  ChartSize
 } from './constants'
 
 type Props = {
@@ -107,7 +107,7 @@ export default class Chart3 extends Component<Props, State> {
     const data = this.getData()
 
     return (
-      <LineChart width={852} height={CHART_HEIGHT} data={data}>
+      <LineChart width={ChartSize.WIDTH} height={ChartSize.HEIGHT} data={data}>
         <CartesianGrid stroke="#f5f5f5" />
         <XAxis dataKey="dateStr" />
         <YAxis />

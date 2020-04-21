@@ -22,7 +22,7 @@ import {
   OUTSIDE_HI,
   COUNTY_PENDING,
   Colors,
-  CHART_HEIGHT
+  ChartSize
 } from './constants'
 
 const Counties = {
@@ -126,8 +126,8 @@ export default class Chart2 extends Component<Props, State> {
 
     return (
       <BarChart
-        width={852}
-        height={CHART_HEIGHT}
+        width={ChartSize.WIDTH}
+        height={ChartSize.HEIGHT}
         data={data}
         margin={{
           top: 20,

@@ -60,4 +60,11 @@ export const COLUMN_INDEX_MAP = {
   NEW_DEATHS: ColIdx.DEATHS_NEW
 }
 
-export const CHART_HEIGHT = 148.5
+export const ChartSize = {
+  get WIDTH() {
+    return Math.min(852, window.innerWidth)
+  },
+  get HEIGHT() {
+    return 148.5
+  }
+}

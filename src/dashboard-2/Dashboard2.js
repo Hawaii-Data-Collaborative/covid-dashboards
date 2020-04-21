@@ -2,6 +2,7 @@ import './style.scss'
 
 import React, { Component } from 'react'
 import moment from 'moment'
+import _ from 'lodash'
 import gapiConfig from '../gapi.json'
 import logo from '../assets/logo.jpg'
 import { loadData, getModifiedDate } from '../data'
@@ -56,6 +57,14 @@ export default class Dashboard2 extends Component<Props, State> {
 
   componentDidMount() {
     this.init()
+
+    window.addEventListener(
+      'resize',
+      _.debounce(() => {
+        console.log('resizing')
+        this.forceUpdate()
+      }, 250)
+    )
   }
 
   init = async () => {

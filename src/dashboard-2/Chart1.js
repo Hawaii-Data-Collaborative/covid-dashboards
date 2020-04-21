@@ -23,7 +23,7 @@ import {
   COLUMN_INDEX_MAP,
   ColIdx,
   OPTIONS,
-  CHART_HEIGHT
+  ChartSize
 } from './constants'
 
 type Props = {
@@ -86,7 +86,11 @@ export default class Chart1 extends Component<Props, State> {
     const data = this.getData()
 
     return (
-      <ComposedChart width={852} height={CHART_HEIGHT} data={data}>
+      <ComposedChart
+        width={ChartSize.WIDTH}
+        height={ChartSize.HEIGHT}
+        data={data}
+      >
         <CartesianGrid stroke="#f5f5f5" />
         <XAxis dataKey="dateStr" />
         <YAxis />
