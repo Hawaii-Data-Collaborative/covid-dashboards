@@ -1,5 +1,5 @@
 {
-  "name": "client",
+  "name": "hdc-covid-dashboards",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -24,8 +24,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "deploy": "scp -r build/* windwardapps.com:/var/www/hdc.windwardapps.com/"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": "react-app"

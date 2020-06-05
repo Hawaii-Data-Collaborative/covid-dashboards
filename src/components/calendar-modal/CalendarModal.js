@@ -2,7 +2,7 @@ import './style.scss'
 
 import React, { useState } from 'react'
 import moment from 'moment'
-import img from '../assets/calendar.png'
+import img from '../../assets/calendar.png'
 import Modal from '../modal/Modal'
 
 type Props = {

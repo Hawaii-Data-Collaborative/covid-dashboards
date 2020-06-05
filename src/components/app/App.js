@@ -2,13 +2,13 @@ import './style.scss'
 
 import React, { Component } from 'react'
 import moment from 'moment'
-import { loadData } from '../data'
-import gapiConfig from '../gapi.json'
-import bigIslandImg from '../assets/big-island'
-import kauaiImg from '../assets/kauai'
-import mauiImg from '../assets/maui'
-import oahuImg from '../assets/oahu'
-import logo from '../assets/logo.jpg'
+import { loadData } from '../../data'
+import gapiConfig from '../../gapi.json'
+import bigIslandImg from '../../assets/big-island'
+import kauaiImg from '../../assets/kauai'
+import mauiImg from '../../assets/maui'
+import oahuImg from '../../assets/oahu'
+import logo from '../../assets/logo.jpg'
 import DetailsModal from '../details-modal/DetailsModal'
 
 const PERCENT = 'PERCENT'
@@ -182,7 +182,7 @@ export default class App extends Component<Props, State> {
                     <select
                       className="form-control form-control-sm"
                       value={deltaType}
-                      onChange={(e) =>
+                      onChange={e =>
                         this.setState({ deltaType: e.target.value })
                       }
                     >

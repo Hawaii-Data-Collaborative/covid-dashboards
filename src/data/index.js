@@ -9,7 +9,6 @@ export async function loadData(gapi: Object, raw: Boolean = false) {
   try {
     console.log('[loadData] loading spreadsheet')
     const res = await gapi.client.sheets.spreadsheets.values.get({
-      // spreadsheetId: '1gJYUMj8pIuQlFEu2v3gNQoD-IegDSzPD11HtoMNvjZ4',
       spreadsheetId: '1sd-L317Je9ZhiQh3_uH9jTkl3ckc_o3sgrVauShcwCk',
       range: 'Data'
     })

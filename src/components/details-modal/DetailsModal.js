@@ -1,7 +1,7 @@
 import './style.scss'
 
 import React, { useState } from 'react'
-import img from '../assets/info.png'
+import img from '../../assets/info.png'
 import Modal from '../modal/Modal'
 
 type Props = {}

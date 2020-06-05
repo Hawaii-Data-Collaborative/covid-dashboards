@@ -3,9 +3,9 @@ import './style.scss'
 import React, { Component } from 'react'
 import moment from 'moment'
 import _ from 'lodash'
-import gapiConfig from '../gapi.json'
-import logo from '../assets/logo.jpg'
-import { loadData, getModifiedDate } from '../data'
+import gapiConfig from '../../gapi.json'
+import logo from '../../assets/logo.jpg'
+import { loadData, getModifiedDate } from '../../data'
 import {
   HAWAII,
   HONOLULU,
